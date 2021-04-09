@@ -48,16 +48,15 @@ def detect(source, weights, imgsz, device='gpu'):
         show_img = img.transpose((1, 2, 0)).copy().astype(np.uint8)
         cv2.rectangle(show_img, (int(pred[0].cpu().numpy()[0][0]), int(pred[0].cpu().numpy()[0][1])),
                       (int(pred[0].cpu().numpy()[0][2]), int(pred[0].cpu().numpy()[0][3])), (0, 255, 0), 3)
-        cv2.imshow('show', show_img)
-        cv2.waitKey(0)
-        return pred
+        cv2.imshow('detect', show_img)
+        cv2.moveWindow('detect', 1300, 500)
+        cv2.waitKey(1)
     else:
         pass
     print(f'Done. ({time.time() - t0:.3f}s)')
 
 
-
 if __name__ == '__main__':
     print(torch.cuda.is_available())
     with torch.no_grad():
-        detect('./ROV', 'weights/best.pt', 640)
+        detect('./ROV', 'weights/best2.pt', 640)

@@ -24,6 +24,7 @@ top = 35
 left = 35
 width = 600
 height = 600
+count = 0
 while (cap.isOpened()):
     try:
         ret, img_src = cap.read()
@@ -97,34 +98,21 @@ while (cap.isOpened()):
             black_img = cv2.putText(black_img, text3,
                                     (int(black_img.shape[1] * 0.03), int(black_img.shape[0] * 0.1)),
                                     cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
-            # if text3=='Find Black!':
-            #     cv2.rectangle(black_img, (black_cord[0][0] - 10, black_cord[1][0] - 10),
-            #                   (black_cord[0][-1] + 10, black_cord[1][-1] + 10), (0, 255, 0), 3)
-            # else:
-            #     pass
+            if text3 == 'Find Black!':
+                if count % 10 == 0:
+                    print(torch.cuda.is_available())
+                    print(count)
+                    with torch.no_grad():
+                        detect(img_src, 'weights/best3.pt', 640)
+                count += 1
+            else:
+                if count == 5:
+                    print(torch.cuda.is_available())
+                    with torch.no_grad():
+                        detect(img_src, 'weights/best3.pt', 640)
+                count += 1
             cv2.imshow('find_black', black_img)
             cv2.moveWindow('find_black', 1300, 10)
-            # circles = detect_circle(img_src)
-            # print(circles)
-            # print(torch.cuda.is_available())
-            # with torch.no_grad():
-            #     pred = detect(img_src, 'weights/best.pt', 640)
-            # if (pred != None) and (len(pred[0].cpu().numpy()) != 0):
-            #     """
-            #         (x1, y1) = (int(pred[0].cpu().numpy()[0][0]), int(pred[0].cpu().numpy()[0][1]))
-            #         (x2, y2) = (int(pred[0].cpu().numpy()[0][2]), int(pred[0].cpu().numpy()[0][3]))
-            #         cupy_data = fromDlpack(to_dlpack(tensor_data))
-            #     """
-            #     print("==================================================================================")
-            #     print(pred[0].cpu().numpy())
-            #     show_img = img_src.transpose((1, 2, 0)).copy().astype(np.uint8)
-            #     print(type(pred[0]))
-            #     cv2.rectangle(show_img, (int(pred[0].cpu().numpy()[0][0]), int(pred[0].cpu().numpy()[0][1])),
-            #                   (int(pred[0].cpu().numpy()[0][2]), int(pred[0].cpu().numpy()[0][3])), (0, 255, 0), 3)
-            #     cv2.imshow('show', show_img)
-            #     cv2.waitKey(10)
-            # else:
-            #     print('No object found!')
-            cv2.waitKey(30)
+            cv2.waitKey(10)
     except:
         break
