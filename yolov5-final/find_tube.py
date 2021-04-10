@@ -4,17 +4,6 @@ from rich import print
 from detect import detect
 import torch
 
-# def detect_circle(img):
-#     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-#     gaussian = cv2.GaussianBlur(gray, (3, 3), 0)
-#     circles1 = cv2.HoughCircles(gaussian, cv2.HOUGH_GRADIENT, 1, 10, param1=100, param2=30, minRadius=10, maxRadius=40)
-#     if circles1 != None:
-#         circles = circles1[0, :, :]
-#         circles = np.uint16(np.around(circles))
-#         return circles
-#     else:
-#         pass
-
 thresh_val = 50
 cap = cv2.VideoCapture("under_test/test1.webm")
 relevance = 0
