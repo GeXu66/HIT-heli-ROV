@@ -26,7 +26,7 @@ while (cap.isOpened()):
             text = 'No Tube Find!Default Right!'
             print(text)
         else:
-            print(track_img)
+            # print(track_img)
             track_x = (track_img[0]).T
             track_y = (track_img[1]).T
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)

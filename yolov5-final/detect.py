@@ -37,17 +37,18 @@ def detect(source, weights, imgsz, device='gpu'):
     pred = model(tensor_img, augment=False)[0]
     # Apply NMS
     pred = non_max_suppression(pred, 0.25, 0.45, classes=0, agnostic=False)
-
+    # print(pred)
     if len(pred[0].cpu().numpy()) != 0:
-        """
-            (x1, y1) = (int(pred[0].cpu().numpy()[0][0]), int(pred[0].cpu().numpy()[0][1]))
-            (x2, y2) = (int(pred[0].cpu().numpy()[0][2]), int(pred[0].cpu().numpy()[0][3]))
-        """
+        (x1, y1) = (int(pred[0].cpu().numpy()[0][0]), int(pred[0].cpu().numpy()[0][1]))
+        (x2, y2) = (int(pred[0].cpu().numpy()[0][2]), int(pred[0].cpu().numpy()[0][3]))
+        convince = str(pred[0].cpu().numpy()[0][4])
         print("==================================================================================")
         print(pred[0].cpu().numpy())
         show_img = img.transpose((1, 2, 0)).copy().astype(np.uint8)
-        cv2.rectangle(show_img, (int(pred[0].cpu().numpy()[0][0]), int(pred[0].cpu().numpy()[0][1])),
-                      (int(pred[0].cpu().numpy()[0][2]), int(pred[0].cpu().numpy()[0][3])), (0, 255, 0), 3)
+        # cv2.rectangle(show_img, (int(pred[0].cpu().numpy()[0][0]), int(pred[0].cpu().numpy()[0][1])),
+        #               (int(pred[0].cpu().numpy()[0][2]), int(pred[0].cpu().numpy()[0][3])), (0, 255, 0), 3)
+        cv2.rectangle(show_img, (x1, y1), (x2, y2), (0, 255, 0), 3)
+        show_img = cv2.putText(show_img, convince, (x1, y1 - 10), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
         cv2.imshow('detect', show_img)
         cv2.moveWindow('detect', 1300, 500)
         cv2.waitKey(1)
