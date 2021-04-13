@@ -92,13 +92,13 @@ while (cap.isOpened()):
                     print(torch.cuda.is_available())
                     print(count)
                     with torch.no_grad():
-                        detect(img_src, 'weights/best3.pt', 640)
+                        detect(img_src, 'weights/best4.pt', 640)
                 count += 1
             else:
                 if count == 5:
                     print(torch.cuda.is_available())
                     with torch.no_grad():
-                        detect(img_src, 'weights/best3.pt', 640)
+                        detect(img_src, 'weights/best4.pt', 640)
                 count += 1
             cv2.imshow('find_black', black_img)
             cv2.moveWindow('find_black', 1300, 10)
