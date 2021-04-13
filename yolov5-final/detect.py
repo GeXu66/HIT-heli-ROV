@@ -1,7 +1,7 @@
 import time
 import cv2
-import torch
 import numpy as np
+import torch
 from models.experimental import attempt_load
 from utils.datasets import letterbox
 from utils.general import check_img_size, non_max_suppression, set_logging

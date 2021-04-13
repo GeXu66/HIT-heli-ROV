@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
+import torch
 from rich import print
 from detect import detect
-import torch
 
 thresh_val = 50
 cap = cv2.VideoCapture("under_test/test1.webm")
