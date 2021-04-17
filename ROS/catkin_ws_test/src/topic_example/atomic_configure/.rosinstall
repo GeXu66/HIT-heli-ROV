@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/heli/ROS/catkin_ws_test/src/topic_example/devel/setup.sh
