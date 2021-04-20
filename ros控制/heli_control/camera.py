@@ -1,6 +1,7 @@
 import cv2 as cv
 import time
 
+
 class camera:
     def __init__(self):
         self.video = cv.VideoCapture(0)
@@ -8,8 +9,8 @@ class camera:
             print("failed")
 
     def get_picture(self):
-        ret,frame = self.video.read()
-        dst = cv.resize(frame,(640,640))
+        ret, frame = self.video.read()
+        dst = cv.resize(frame, (640, 640))
         return dst
 
     def get_video(self):
@@ -31,6 +32,7 @@ class camera:
 
     def camera_release(self):
         self.video.release()
+
 
 if __name__ == '__main__':
     Camera = camera()
