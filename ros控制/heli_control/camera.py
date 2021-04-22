@@ -5,6 +5,7 @@ import time
 class camera:
     def __init__(self):
         self.video = cv.VideoCapture(0)
+        # self.video = cv.VideoCapture("/home/heli/视频/Webcam/2021-03-29-203948.webm")
         if not self.video.isOpened():
             print("failed")
 
@@ -32,9 +33,12 @@ class camera:
 
     def camera_release(self):
         self.video.release()
+        print("camera is closed")
+
+    def re_open(self):
+        if not self.video.isOpened():
+            self.video = cv.VideoCapture(0)
+            print("camera is open")
 
 
-if __name__ == '__main__':
-    Camera = camera()
-    Camera.get_video()
-    Camera.camera_release()
+Camera = camera()

@@ -1,0 +1,5 @@
+train: ./ROV/images/train
+val: ./ROV/images/val
+
+nc: 2
+names: ['circle','square']

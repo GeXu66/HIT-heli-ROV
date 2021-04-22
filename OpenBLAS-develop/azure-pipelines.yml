@@ -1,0 +1,100 @@
+trigger:
+  # start a new build for every push
+  batch: False
+  branches:
+    include:
+      - develop
+
+jobs:
+# manylinux1 is useful to test because the
+# standard Docker container uses an old version
+# of gcc / glibc
+- job: manylinux1_gcc
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+      echo "FROM quay.io/pypa/manylinux1_x86_64
+        COPY . /tmp/openblas
+        RUN cd /tmp/openblas                                      &&  \
+            COMMON_FLAGS='DYNAMIC_ARCH=1 TARGET=NEHALEM NUM_THREADS=32' && \
+            BTYPE='BINARY=64' CC=gcc && \
+            make QUIET_MAKE=1 $COMMON_FLAGS $BTYPE && \
+            make -C test $COMMON_FLAGS $BTYPE && \
+            make -C ctest $COMMON_FLAGS $BTYPE && \
+            make -C utest $COMMON_FLAGS $BTYPE" > Dockerfile
+      docker build .
+    displayName: Run manylinux1 docker build
+- job: Intel_SDE_skx
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+      # at the time of writing the available Azure Ubuntu vm image
+      # does not support AVX512VL, so use more recent LTS version
+      echo "FROM ubuntu:bionic
+      COPY . /tmp/openblas
+      RUN apt-get -y update && apt-get -y install \\
+          cmake \\
+          gfortran \\
+          make \\
+          wget
+      RUN mkdir /tmp/SDE && cd /tmp/SDE && \\
+          mkdir sde-external-8.35.0-2019-03-11-lin && \\
+          wget --quiet -O sde-external-8.35.0-2019-03-11-lin.tar.bz2 https://www.dropbox.com/s/fopsnzj67572sj5/sde-external-8.35.0-2019-03-11-lin.tar.bz2?dl=0 && \\
+          tar -xjvf sde-external-8.35.0-2019-03-11-lin.tar.bz2 -C /tmp/SDE/sde-external-8.35.0-2019-03-11-lin --strip-components=1
+      RUN cd /tmp/openblas && CC=gcc make QUIET_MAKE=1 DYNAMIC_ARCH=1 NUM_THREADS=32 BINARY=64
+      CMD cd /tmp/openblas && echo 0 > /proc/sys/kernel/yama/ptrace_scope && CC=gcc OPENBLAS_VERBOSE=2 /tmp/SDE/sde-external-8.35.0-2019-03-11-lin/sde64 -cpuid_in /tmp/SDE/sde-external-8.35.0-2019-03-11-lin/misc/cpuid/skx/cpuid.def -- make -C utest DYNAMIC_ARCH=1 NUM_THREADS=32 BINARY=64" > Dockerfile
+      docker build -t intel_sde .
+      # we need a privileged docker run for sde process attachment
+      docker run --privileged intel_sde
+    displayName: 'Run AVX512 SkylakeX docker build / test'
+
+- job: Windows_cl
+  pool:
+     vmImage: 'windows-latest'
+  steps:   
+  - task: CMake@1
+    inputs:
+      workingDirectory: 'build' # Optional
+      cmakeArgs: '-G "Visual Studio 16 2019" ..'
+  - task: CMake@1
+    inputs:
+      cmakeArgs: '--build . --config Release'
+      workingDirectory: 'build'
+  - script: |
+      cd build
+      cd utest
+      dir
+      openblas_utest.exe
+  
+- job: OSX_OpenMP
+  pool:
+     vmImage: 'macOS-10.15'
+  steps:   
+  - script: |
+      brew update
+      make TARGET=CORE2 DYNAMIC_ARCH=1 USE_OPENMP=1 INTERFACE64=1 CC=gcc-10 FC=gfortran-10
+     
+- job: OSX_GCC_Nothreads
+  pool:
+     vmImage: 'macOS-10.15'
+  steps:   
+  - script: |
+      brew update
+      make USE_THREADS=0 CC=gcc-10 FC=gfortran-10
+     
+- job: OSX_OpenMP_Clang
+  pool:
+     vmImage: 'macOS-10.15'
+  variables:
+     LD_LIBRARY_PATH: /usr/local/opt/llvm/lib
+     LIBRARY_PATH: /usr/local/opt/llvm/lib
+  steps:   
+  - script: |
+      brew update
+      brew install llvm libomp
+      brew tap LouisBrunner/valgrind
+      brew install --HEAD LouisBrunner/valgrind/valgrind
+      make TARGET=SANDYBRIDGE NO_AVX512=1 USE_OPENMP=1 INTERFACE64=1 DYNAMIC_ARCH=1 DYNAMIC_LIST=SANDYBRIDGE DEBUG=1 NO_PARALLEL_MAKE=1 CC=/usr/local/opt/llvm/bin/clang FC=gfortran-10
+      cd ctest; OMP_NUM_THREADS=1 valgrind ./xscblat2 <sin2
