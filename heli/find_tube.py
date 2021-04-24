@@ -5,13 +5,14 @@ from detect import detect
 import torch
 
 
+
 def deal_pic(src):
     img_src = cv2.resize(src, (640, 640))
     ret, img_1 = cv2.threshold(img_src[:, :, 1], 150, 255, cv2.THRESH_BINARY)
     ret, img_2 = cv2.threshold(img_src[:, :, 2], 150, 255, cv2.THRESH_BINARY)
     img = cv2.bitwise_and(img_1, img_2)
     track_img = np.where(img == 255)
-    return img_src, track_img, img
+    return img_src, track_img, img_2
 
 
 def find_black(img_src, top=35, left=35, width=600, height=600):
@@ -27,14 +28,14 @@ def dl_detect(img_src, count, DL=False, dl_flag=False, DEBUG=False):
         if count == 0:
             print(torch.cuda.is_available())
             with torch.no_grad():
-                detect(img_src, 'weights/best.pt', 640, device='gpu', DEBUG=DEBUG)
+                detect(img_src, 'weights/final.pt', 640, device='gpu', DEBUG=DEBUG)
             count += 1
         else:
             pass
         if dl_flag:
             if count % 5 == 0:
                 with torch.no_grad():
-                    detect(img_src, 'weights/best.pt', 640, device='gpu', DEBUG=DEBUG)
+                    detect(img_src, 'weights/final.pt', 640, device='gpu', DEBUG=DEBUG)
                 count += 1
             else:
                 count += 1
@@ -51,6 +52,7 @@ def poly_fit(track_img, img, DEBUG):
     # fit linear function according to the white region
     pre_fit = np.polyfit(img.shape[1] - track_x + 1, track_y + 1, 1)  # #col = f(#row)
     pre_val = np.polyval(pre_fit, [0, img.shape[0] - 1]).astype(int)  # #col = f(#row)
+    print(pre_val)
     line_center = int((pre_val[0] + pre_val[1]) / 2)
     # calculate degree error
     pre_angle = (pre_val[0] - pre_val[1]) / np.sqrt((pre_val[0] - pre_val[1]) ** 2 + img.shape[0] ** 2)
@@ -104,7 +106,7 @@ def camera_control(src, count, DEBUG, DL):
             # print(track_img)
             line_center, pre_angle, now_error, output_img = poly_fit(track_img, img, DEBUG)
             center_error = line_center - int(img_src.shape[1] / 2)
-            text1, text2 = judge_direction(center_error, pre_angle)
+            text1, text2 = judge_direction(now_error, pre_angle)
             output_img = cv2.putText(output_img, text1, (int(img.shape[1] * 0.03), int(img.shape[0] * 0.3)),
                                      cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
             output_img = cv2.putText(output_img, text2, (int(img.shape[1] * 0.03), int(img.shape[0] * 0.4)),
@@ -159,7 +161,7 @@ def camera_control(src, count, DEBUG, DL):
             return center_error, pre_angle, False, 0
 
 
-cap = cv2.VideoCapture("under_test/test1.webm")
+cap = cv2.VideoCapture("Webcam/2021-04-17-013257.webm")
 count = -1
 while cap.isOpened():
     count += 1
