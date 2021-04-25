@@ -2,10 +2,10 @@ import time
 import cv2
 import torch
 import numpy as np
-from heli_cv.yolov5_final.models.experimental import attempt_load
-from heli_cv.yolov5_final.utils.datasets import letterbox
-from heli_cv.yolov5_final.general import check_img_size, non_max_suppression, set_logging
-from heli_cv.yolov5_final.utils.torch_utils import select_device
+from models.experimental import attempt_load
+from utils.datasets import letterbox
+from utils.general import check_img_size, non_max_suppression, set_logging
+from utils.torch_utils import select_device
 
 
 def detect(source, weights, imgsz, device='gpu', DEBUG=False):
@@ -56,10 +56,9 @@ def detect(source, weights, imgsz, device='gpu', DEBUG=False):
             cv2.imshow('detect', show_img)
             cv2.moveWindow('detect', 1300, 500)
             cv2.waitKey(1)
-            return int(pred[0].cpu().numpy()[0][5])
+            return int(pred[0].cpu().numpy()[0])
         else:
-            return int(pred[0].cpu().numpy()[0][5])
-
+            return int(pred[0].cpu().numpy()[0])
     else:
-        return -1
-print(f'Done. ({time.time() - t0:.3f}s)')
+        pass
+    print(f'Done. ({time.time() - t0:.3f}s)')

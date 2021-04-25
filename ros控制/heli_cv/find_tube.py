@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 # from rich import print
-#from heli_cv.detect import detect
+from detect import detect
 import torch
 
 
@@ -11,7 +11,7 @@ def deal_pic(src):
     ret, img_2 = cv2.threshold(img_src[:, :, 2], 150, 255, cv2.THRESH_BINARY)
     img = cv2.bitwise_and(img_1, img_2)
     track_img = np.where(img == 255)
-    return img_src, track_img, img
+    return img_src, track_img, img_2
 
 
 def find_black(img_src, top=35, left=35, width=600, height=600):
@@ -27,15 +27,16 @@ def dl_detect(img_src, count, DL=False, dl_flag=False, DEBUG=False):
         if count == 0:
             print(torch.cuda.is_available())
             with torch.no_grad():
-                detect(img_src, 'weights/best4.pt', 640, device='cpu', DEBUG=DEBUG)
+                morph=detect(img_src, 'weights/final.pt', 640, device='cpu', DEBUG=DEBUG)
             count += 1
         else:
             pass
         if dl_flag:
             if count % 8 == 0:
                 with torch.no_grad():
-                    detect(img_src, 'weights/best4.pt', 640, device='cpu', DEBUG=DEBUG)
+                    morph=detect(img_src, 'weights/final.pt', 640, device='cpu', DEBUG=DEBUG)
                 count += 1
+                return morph
             else:
                 count += 1
         else:
@@ -45,9 +46,12 @@ def dl_detect(img_src, count, DL=False, dl_flag=False, DEBUG=False):
 
 
 def poly_fit(track_img, img, DEBUG):
-    track_x = (track_img[0]).T
-    track_y = (track_img[1]).T
+    track_img0 = track_img[0]
+    track_img1 = track_img[1]
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    img = img[int(0):int(600), int(0):int(640)]
+    track_x = track_img0.T
+    track_y = track_img1.T
     # fit linear function according to the white region
     pre_fit = np.polyfit(img.shape[1] - track_x + 1, track_y + 1, 1)  # #col = f(#row)
     pre_val = np.polyval(pre_fit, [0, img.shape[0] - 1]).astype(int)  # #col = f(#row)
@@ -134,8 +138,8 @@ def camera_control(src, count, DEBUG, DL):
             cv2.imshow('find_black', black_img)
             cv2.moveWindow('find_black', 1300, 10)
             cv2.waitKey(1)
-            dl_detect(img_src, count, DL, dl_flag, DEBUG)
-            return now_error, pre_angle, False, 0
+            morph = dl_detect(img_src, count, DL, dl_flag, DEBUG)
+            return int(center_error), pre_angle, dl_flag, morph
     else:
         img_src, track_img, img = deal_pic(src)
         if len(track_img[0]) == 0:
@@ -144,19 +148,19 @@ def camera_control(src, count, DEBUG, DL):
         else:
             # print(track_img)
             line_center, pre_angle, now_error, output_img = poly_fit(track_img, img, DEBUG)
-            center_error = line_center - int(img_src.shape[1] / 2)
+            center_error = line_center - int(img_src.shape[1] / 2) - 80
             gray_img, black_img, black_cord = find_black(img_src, top=35, left=35, width=600, height=600)
             # print(black_cord)
             if len(black_cord[0]) > 5000:
                 text3 = 'Find Black!'
                 dl_flag = True
                 # color = dl_detect(img_src, count, DL, dl_flag, DEBUG)
-                dl_detect(img_src, count, DL, dl_flag, DEBUG)
-                return now_error, pre_angle, True, 1
+                morph = dl_detect(img_src, count, DL, dl_flag, DEBUG)
+                return center_error, pre_angle, True, morph
             else:
                 text3 = 'No Black!'
                 dl_flag = False
-            return now_error, pre_angle, False, 0
+                return center_error, pre_angle, False, 0
 
 
 cap = cv2.VideoCapture("under_test/test1.webm")

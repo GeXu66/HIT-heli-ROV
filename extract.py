@@ -8,7 +8,7 @@ def save_image(image, addr, num):
 
 
 # 读取视频文件
-videoCapture = cv2.VideoCapture("VID20210421214952.mp4")
+videoCapture = cv2.VideoCapture("new.mp4")
 # 通过摄像头的方式
 # videoCapture=cv2.VideoCapture(1)
 

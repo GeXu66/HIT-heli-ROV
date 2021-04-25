@@ -7,7 +7,7 @@ from heli_control.motor import Motor
 from heli_control.camera import Camera
 count = -1
 DL = False
-DEBUG = True
+DEBUG = False
 if __name__ == '__main__':
     publish.ros_init()
     mul_process.opentreaed()
