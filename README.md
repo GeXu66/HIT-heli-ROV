@@ -1,8 +1,8 @@
 # HIT-heli-ROV 水下机器人，哈深河狸队
 
-![](E:\比赛们\水下机器人\git-hit-heli\HIT-heli-ROV\underwater-model.gif)
+![](https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/underwater-model.gif)
 
-![](E:\比赛们\水下机器人\git-hit-heli\HIT-heli-ROV\underwater ‐ Made with Clipchamp.gif)
+![](https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/underwater.gif)
 
 ## 电路部分
 
@@ -28,7 +28,7 @@
 
 信息获取与发送：通过设计通讯数据包，使用STM32与上位机Jestonnano进行串口通讯，获取六个推进器的转速和控制标志，将转速传给推进器实现运动；同时STM32分别通过串口中断和轮询获取IMU的欧拉角信息和深度传感器的深度信息，并将其通过串口发送给上位机。过程控制：通过STM32定时器产生PWM波输出给推进器连接的电调，驱动推进器工作
 
-![](E:\比赛们\水下机器人\git-hit-heli\HIT-heli-ROV\png\整体结构.png)
+![](https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84.png)
 
 ###   **2**、器件选择及实施方案
 
@@ -42,7 +42,7 @@
 
 5. 电源：选用11.6V的4S电池为推进器供电，使用5V输出的充电宝为Jestonnano供电，STM32F103的供电由Nano引出，其他传感器的电源从STM32引出
 
-   ![](E:\比赛们\水下机器人\git-hit-heli\HIT-heli-ROV\png\板子.png)
+   ![](https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/%E6%9D%BF%E5%AD%90.png)
 
 ###   **3**、总结和体会
 
@@ -60,11 +60,11 @@
 
 第四，YOLOv5的体积很小。具体来说，YOLOv5的权重文件是27兆字节。YOLOv4（采用Darknet架构）的权重文件是244兆。YOLOv5比YOLOv4小了近90%。这意味着YOLOv5可以更容易地部署q到嵌入式设备上。
 
-<img src="E:\比赛们\水下机器人\git-hit-heli\HIT-heli-ROV\png\误差图.png" style="zoom:48%;" />
+<img src="https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/%E8%AF%AF%E5%B7%AE%E5%9B%BE.png" style="zoom:48%;" />
 
-![](E:\比赛们\水下机器人\git-hit-heli\HIT-heli-ROV\png\视觉控制流程图.jpg)
+![](https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/%E8%A7%86%E8%A7%89%E6%8E%A7%E5%88%B6%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg)
 
-<img src="E:\比赛们\水下机器人\git-hit-heli\HIT-heli-ROV\png\STM32控制流程图.png" style="zoom:75%;" />
+<img src="https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/STM32%E6%8E%A7%E5%88%B6%E6%B5%81%E7%A8%8B%E5%9B%BE.png" style="zoom:75%;" />
 
 ### 4.说 明
 
@@ -84,4 +84,4 @@
 
 电路设计：  选用STM32F103ZET6核心板，引出必要的IO口，且IO接口设计能用于方便合理接线  理由如下：  (1)引出TIM2-TIM3的PWM通道且安排与相近位置，方便推进器驱动信号统一接线  (2)引出五路串口UART1-UART5,且大部分串口RX-TX引脚位置相邻，方便与通讯模块连接  (3)核心板预留出5V与3.3V电源输出，便于给深度传感器和IMU供电，无需再引入电源模块
 
-![](E:\比赛们\水下机器人\git-hit-heli\HIT-heli-ROV\png\final.png)
+![](https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/final.png)
