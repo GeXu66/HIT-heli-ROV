@@ -9,6 +9,10 @@ from utils.torch_utils import select_device
 
 
 def detect(source, weights, imgsz, device='gpu', DEBUG=False):
+    interval_x = 480
+    interval_y = 480
+    start_x = 400
+    start_y = 50
     # Initialize
     label = ['circle', 'square']
     set_logging()
@@ -54,11 +58,16 @@ def detect(source, weights, imgsz, device='gpu', DEBUG=False):
                                    (int(show_img.shape[1] * 0.03), int(show_img.shape[0] * 0.2)),
                                    cv2.FONT_HERSHEY_DUPLEX, 1, (255, 0, 0), 2)
             cv2.imshow('detect', show_img)
-            cv2.moveWindow('detect', 1300, 500)
+            cv2.resizeWindow('detect', 480, 480)
+            cv2.moveWindow('detect', start_x+interval_x, start_y+interval_y)
             cv2.waitKey(1)
             return pred[0].cpu().numpy()[0]
         else:
             return pred[0].cpu().numpy()[0]
-    else:
-        pass
+    # else:
+    #     cv2.imshow('detect', source)
+    #     cv2.resizeWindow('detect', 480, 480)
+    #     cv2.moveWindow('detect', start_x + interval_x, start_y + interval_y)
+    #     cv2.waitKey(1)
+    #     pass
     print(f'Done. ({time.time() - t0:.3f}s)')

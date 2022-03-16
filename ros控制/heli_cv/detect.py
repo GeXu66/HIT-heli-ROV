@@ -10,7 +10,7 @@ from utils.torch_utils import select_device
 
 def detect(source, weights, imgsz, device='gpu', DEBUG=False):
     # Initialize
-    label = ['circle', 'square']
+    label = ['red', 'blue']
     set_logging()
     device = select_device(device)
     half = device.type != 'cpu'  # half precision only supported on CUDA
@@ -62,3 +62,8 @@ def detect(source, weights, imgsz, device='gpu', DEBUG=False):
     else:
         pass
     print(f'Done. ({time.time() - t0:.3f}s)')
+
+
+frame = cv2.imread('1 (1).jpg')
+print(torch.cuda.is_available())
+detect(frame, './best.pt', 640, device='gpu', DEBUG=True)

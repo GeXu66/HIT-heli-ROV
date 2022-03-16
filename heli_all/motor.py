@@ -138,18 +138,6 @@ class motor_all:
                     self.turn_right_mode = False
         if self.now_state == "move_on":
             pass
-            # if self.old_state == "turn_right":
-            #     self.new_putdata = np.array(self.motor8.speed)
-            #     self.change = True
-            # if self.old_state == "turn_left":
-            #     self.new_putdata = np.array(self.motor7.speed)
-            #     self.change = True
-            # if self.old_state == "move_right":
-            #     self.new_putdata = np.array(self.motor3.speed)
-            #     self.change = True
-            # if self.old_state == "move_right":
-            #     self.new_putdata = np.array(self.motor4.speed)
-            #     self.change = True
 
         self.old_state = self.now_state
         self.motor_pid()

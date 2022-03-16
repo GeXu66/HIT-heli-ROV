@@ -6,77 +6,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30a8e1ef-2cd0-413e-b6de-5d15fd940cc5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.dockerignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/FUNDING.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/ISSUE_TEMPLATE/bug-report.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/ISSUE_TEMPLATE/feature-request.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/ISSUE_TEMPLATE/question.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/dependabot.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/workflows/ci-testing.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/workflows/codeql-analysis.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/workflows/greetings.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/workflows/rebase.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.github/workflows/stale.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/detect.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/hubconf.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/common.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/experimental.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/export.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/anchors.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov3-spp.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov3-tiny.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov3.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5-fpn.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5-p2.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5-p6.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5-p7.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5-panet.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5l6.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5m6.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5s-transformer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5s6.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/hub/yolov5x6.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/yolo.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/yolov5l.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/yolov5m.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/yolov5s.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/models/yolov5x.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/train.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/tutorial.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/activations.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/autoanchor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/aws/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/aws/mime.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/aws/resume.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/aws/userdata.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/datasets.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/flask_rest_api/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/flask_rest_api/example_request.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/flask_rest_api/restapi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/general.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/google_app_engine/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/google_app_engine/additional_requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/google_app_engine/app.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/google_utils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/loss.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/metrics.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/plots.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/torch_utils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/wandb_logging/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/wandb_logging/log_dataset.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/utils/wandb_logging/wandb_utils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yolov5-master/weights/download_weights.sh" beforeDir="false" />
-    </list>
+    <list default="true" id="30a8e1ef-2cd0-413e-b6de-5d15fd940cc5" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,6 +41,7 @@
       <workItem from="1619014677741" duration="2000" />
       <workItem from="1619014685503" duration="2781000" />
       <workItem from="1619062230566" duration="606000" />
+      <workItem from="1619527893898" duration="6000" />
     </task>
     <servers />
   </component>

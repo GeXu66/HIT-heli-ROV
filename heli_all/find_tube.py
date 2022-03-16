@@ -13,8 +13,8 @@ def ls_find(black_cord, black_img):
     global had_find
     global now_state
     global last_state
-    # ls = [-1, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-    ls = [1,1,0,1,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ls = [1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0]
     x = np.mean(black_cord[1])
     x = int(x)
     y = np.mean(black_cord[0])
@@ -59,8 +59,8 @@ def deal_pic(src):
     width = 640
     height = 470
     img_src = cv2.resize(src, (640, 640))
-    ret, img_1 = cv2.threshold(img_src[:, :, 1], 150, 255, cv2.THRESH_BINARY)
-    ret, img_2 = cv2.threshold(img_src[:, :, 2], 150, 255, cv2.THRESH_BINARY)
+    ret, img_1 = cv2.threshold(img_src[:, :, 1], 100, 255, cv2.THRESH_BINARY)
+    ret, img_2 = cv2.threshold(img_src[:, :, 2], 100, 255, cv2.THRESH_BINARY)
     img_2 = img_2[int(top):(int(top) + int(height)), int(left):(int(left) + int(width))]
     # img = cv2.bitwise_and(img_1, img_2)
     track_img = np.where(img_2 == 255)
@@ -70,32 +70,25 @@ def deal_pic(src):
 def find_black(img_src, top=35, left=35, width=600, height=500):
     gray_img = cv2.cvtColor(img_src, cv2.COLOR_BGR2GRAY)
     gray_img = gray_img[int(top):(int(top) + int(height)), int(left):(int(left) + int(width))]
-    ret, black_img = cv2.threshold(gray_img, 80, 255, cv2.THRESH_BINARY)
+    ret, black_img = cv2.threshold(gray_img, 30, 255, cv2.THRESH_BINARY)
     black_cord = np.where(black_img == 0)
     return gray_img, black_img, black_cord
 
 
-def dl_detect(img_src, count, DL=False, dl_flag=False, DEBUG=False):
-    if DL:
-        if count == 0:
-            print(torch.cuda.is_available())
-            with torch.no_grad():
-                morph = detect(img_src, 'weights/final.pt', 640, device='cpu', DEBUG=DEBUG)
-            count += 1
-        else:
-            pass
-        if dl_flag:
-            if count % 8 == 0:
-                with torch.no_grad():
-                    morph = detect(img_src, 'weights/final.pt', 640, device='cpu', DEBUG=DEBUG)
-                count += 1
-                return morph
-            else:
-                count += 1
-        else:
-            pass
+def dl_detect(img_src, count, DEBUG=False):
+    if count == 0:
+        print(torch.cuda.is_available())
+        with torch.no_grad():
+            morph = detect(img_src, 'weights/final.pt', 480, device='gpu', DEBUG=DEBUG)
+        count += 1
+    if count % 20 == 1:
+        print(torch.cuda.is_available())
+        with torch.no_grad():
+            morph = detect(img_src, 'weights/final.pt', 480, device='gpu', DEBUG=DEBUG)
+        count += 1
+        return morph
     else:
-        pass
+        count += 1
 
 
 def poly_fit(track_img, img, DEBUG):
@@ -150,7 +143,12 @@ def judge_direction(horizon_error, pre_angle):
     return text1, text2
 
 
-def camera_control(src, count, DEBUG, DL):
+def camera_control(src, count, DEBUG):
+    interval_x = 480
+    interval_y = 480
+    start_x = 400
+    start_y = 50
+    num_thre = 10000
     if DEBUG:
         img_src, track_img, img = deal_pic(src)
         if len(track_img[0]) == 0:
@@ -169,33 +167,33 @@ def camera_control(src, count, DEBUG, DL):
             output_img = cv2.putText(output_img, text2, (int(img.shape[1] * 0.03), int(img.shape[0] * 0.4)),
                                      cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
             cv2.namedWindow('output', 0)
-            cv2.moveWindow('output', 30, 10)
-            # print(output_img.shape())
+            cv2.moveWindow('output', start_x, start_y)
+            cv2.resizeWindow('output', 480, 480)
             cv2.imshow('output', output_img)
             cv2.waitKey(1)
-            # cv2.namedWindow('img', 0)
-            # cv2.moveWindow('img', 650, 10)
-            # # print(img_src.shape())
-            # cv2.imshow('img', img_src)
+            cv2.namedWindow('img', 0)
+            cv2.resizeWindow('img', 480, 480)
+            cv2.moveWindow('img', start_x+interval_x, start_y)
+            cv2.imshow('img', img_src)
             cv2.waitKey(1)
             gray_img, black_img, black_cord = find_black(img_src, top=50, left=50, width=600, height=460)
             # print(black_cord)
-            if 2500 < len(black_cord[0]):
+            if num_thre < len(black_cord[0]):
                 text3 = 'Find Black!'
-                black_img, flag, morph = ls_find(black_cord, black_img)
+                # black_img, flag, morph = ls_find(black_cord, black_img)
+                dl_detect(img_src, count, DEBUG=DEBUG)
             else:
                 text3 = 'No Black!'
-                flag = False
-                morph = 0
             # black_img = cv2.cvtColor(black_img, cv2.COLOR_GRAY2BGR)
             black_img = cv2.putText(black_img, text3,
                                     (int(black_img.shape[1] * 0.03), int(black_img.shape[0] * 0.1)),
                                     cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
             cv2.imshow('find_black', black_img)
-            cv2.moveWindow('find_black', 400, 10)
+            cv2.moveWindow('find_black', start_x, start_y+interval_y)
+            cv2.resizeWindow('find_black', 480, 480)
             cv2.waitKey(1)
             # morph = dl_detect(img_src, count, DL, dl_flag, DEBUG)
-            return int(center_error), pre_angle, flag, morph
+            return int(center_error), pre_angle
     else:
         img_src, track_img, img = deal_pic(src)
         if len(track_img[0]) == 0:
@@ -213,8 +211,6 @@ def camera_control(src, count, DEBUG, DL):
                 text3 = 'Find Black!'
                 dl_flag = True
                 black_img, flag, morph = ls_find(black_cord, black_img)
-                # color = dl_detect(img_src, count, DL, dl_flag, DEBUG)
-                # morph = dl_detect(img_src, count, DL, dl_flag, DEBUG)
                 return center_error, pre_angle, flag, morph
             else:
                 text3 = 'No Black!'
@@ -223,11 +219,12 @@ def camera_control(src, count, DEBUG, DL):
 
 
 cap = cv2.VideoCapture("under_test/Webcam/2021-04-17-013257.webm")
+print(torch.cuda.is_available())
 count = -1
 while cap.isOpened():
     count += 1
     ret, frame = cap.read()
     if frame is not None:
-        camera_control(frame, count, DEBUG=True, DL=False)
+        camera_control(frame, count, DEBUG=True)
     else:
         exit(0)

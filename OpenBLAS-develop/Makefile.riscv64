@@ -1,4 +1,0 @@
-ifeq ($(CORE), C910V)
-CCOMMON_OPT += -march=rv64gcvxthead -mabi=lp64v
-FCOMMON_OPT += -march=rv64gcvxthead -mabi=lp64v -static
-endif
