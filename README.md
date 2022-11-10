@@ -1,7 +1,9 @@
 # HIT-heli-ROV 水下机器人，哈深河狸队
 
 ![](https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/underwater-model.gif)
-
+水下机器人模型百度网盘链接：
+链接：https://pan.baidu.com/s/1DfWbYRaOcvUyCyCEIduUzQ?pwd=r28p 
+提取码：r28p
 ![](https://github.com/GeXu66/HIT-heli-ROV/blob/main/png/underwater.gif)
 
 ## 电路部分
